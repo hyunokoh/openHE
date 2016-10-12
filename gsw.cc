@@ -6,8 +6,9 @@
 
 const int l = 20;
 const int q = (1<<(l));
-const int n = 160;	// Note that to support *, at least, N < 2^{l-2}/2
-const int m = (2*n*l);
+const int n = 80;	// Note that to support *, at least, N < 2^{l-2}/2
+//const int m = (2*n*l);
+const int m = (n+1)*(l+3);	// In BV14, m = (n+1)(l+O(1))
 const int N = (n+1)*l; 
 
 /*
@@ -20,13 +21,16 @@ const int m = 3;	// m = n+1;
 const int N = m*l; 
 */
 
+// private keys
 ZqMatrix s(n+1,1,q);
 ZqMatrix v(N,1,q);
+
+// public keys
 ZqMatrix A(m,n+1,q);
 
 
 // the following are temporary variables. They will be moved into their functions. Currently they are moved out to the global area for debugging purpose.
-ZqMatrix B(m,n,q), e(m,1,q);
+//ZqMatrix B(m,n,q), e(m,1,q);
 ZqMatrix t(n,1,q);
 ZqMatrix b(m,1,q);
 ZqMatrix R(N,m,q);
@@ -45,25 +49,25 @@ int getX()
 	//return (rand()%3)-1;
 }
 
-
-void genKeys()
+void generateSK()
 {
-	// generate sk
 	s(0,0) = 1;
-//	ZqMatrix t(n,1,q);
 	int i, j;
 	for(i=0; i<n;i++) {
 		t(i,0) = getZq();
-		s(i+1,0) = (q-t(i,0))%q;
+		s(i+1,0) = MOD(q-t(i,0),q);
 
 	}
 	for(i=0; i<n+1; i++)
 		for(j=0; j<l; j++)
-			v(i*l+j, 0) = (s(i,0)* (1<<j))%q;
+			v(i*l+j, 0) = MOD((s(i,0)* (1<<j)),q);
+}
 
-	// generate pk
+void generatePK()
+{
+	int i,j;
 	// B <-- Z^{m*n}_q
-//	ZqMatrix B(m,n,q), e(m,1,q);
+	ZqMatrix B(m,n,q), e(m,1,q);
 	for(i=0; i<m; i++) {
 		for(j=0; j<n; j++) {
 			B(i,j) = getZq();
@@ -83,6 +87,39 @@ void genKeys()
 	}
 }
 
+ZqMatrix generateNewRandom()
+{
+	int i,j;
+	// R <-- Z^{N*n}_q
+	ZqMatrix R(N,n,q), e(N,1,q);
+	for(i=0; i<N; i++) {
+		for(j=0; j<n; j++) {
+			R(i,j) = getZq();
+		}	
+		e(i,0) = getX();
+	}
+
+	ZqMatrix b = R*t+e;
+	ZqMatrix r(N,N,q);
+	for(i=0;i<N; i++) {
+		r(i,0) = b(i,0);
+		for(j=0; j<n; j++) {
+			r(i,j+1) = R(i,j);
+		}
+	}
+
+	return r;
+}
+
+void genKeys()
+{
+	// generate sk
+	generateSK();
+
+	// generate pk
+	generatePK();
+}
+
 ZqMatrix enc(int mu)
 {
 	clock_t start,end;
@@ -94,6 +131,25 @@ ZqMatrix enc(int mu)
 	end = clock();
 	printf("c mul time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 	c = c.bitDecomp(); 
+
+	if(mu) {
+		c = c+ZqMatrix::identity(N, mu);
+		
+		return c.flatten();
+	} else {
+		return c;
+	}
+}
+
+// In BV14, there are public key based and secret key based encryption
+ZqMatrix encSec(int mu)
+{
+	clock_t start,end;
+
+	start = clock();
+	ZqMatrix c = generateNewRandom().bitDecomp();
+	end = clock();
+	printf("c mul time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
 	if(mu) {
 		c = c+ZqMatrix::identity(N, mu);
@@ -156,7 +212,8 @@ int main()
 	printf("dec time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
 	start = clock();
-	CipherText c1 = enc(1);	
+	CipherText c1 = encSec(1);	
+	//CipherText c1 = enc(1);	
 	end = clock();
 	printf("enc time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
