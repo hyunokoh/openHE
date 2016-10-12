@@ -45,8 +45,8 @@ int getZq()
 
 int getX()
 {
-	return 0;
-	//return (rand()%3)-1;
+	//return 0;
+	return (rand()%3)-1;
 }
 
 void generateSK()
