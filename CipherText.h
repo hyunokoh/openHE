@@ -7,7 +7,6 @@
 
 #include <stdint.h>
 #include <stdio.h>
-#include <type.h>
 
 #include "ZqMatrix.h"
 
@@ -72,7 +71,7 @@ ZqMatrix CipherText::operator*(const ZqMatrix& theMat)
 			uint64_t* b = packedB+j*packedNum;
                         int s = 0;
 			for(int k=0; k<packedNum; k++) {
-				uint64 t = packedA[k] & packedB[k];
+				uint64_t t = packedA[k] & packedB[k];
 #ifdef POPCNT_OPTIMIZATION
 				s += _mm_popcnt_u64(t);
 #else
