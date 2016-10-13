@@ -16,6 +16,7 @@ protected:
 	int pL;
   
 public:
+	ZqMatrix();
 	ZqMatrix(int theNumRows, int theNumCols, int theQ); 
 	ZqMatrix(const ZqMatrix& theMat);
 	virtual ~ZqMatrix();

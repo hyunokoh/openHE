@@ -4,9 +4,11 @@
 #include <stdio.h>
 
 
-const int l = 20;
+const int l = 8;
+const int n = 8;	// Note that to support *, at least, N < 2^{l-2}/2
+//const int l = 20;
+//const int n = 80;	// Note that to support *, at least, N < 2^{l-2}/2
 const int q = (1<<(l));
-const int n = 80;	// Note that to support *, at least, N < 2^{l-2}/2
 //const int m = (2*n*l);
 const int m = (n+1)*(l+3);	// In BV14, m = (n+1)(l+O(1))
 const int N = (n+1)*l; 
@@ -45,8 +47,8 @@ int getZq()
 
 int getX()
 {
-	//return 0;
-	return (rand()%3)-1;
+	return 0;
+	//return (rand()%3)-1;
 }
 
 void generateSK()
@@ -202,7 +204,7 @@ int main()
 	printf("gen time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
 	start = clock();
-	CipherText c0 = enc(0);	
+	CipherText c0 = enc(1);	
 	end = clock();
 	printf("enc time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
@@ -212,13 +214,13 @@ int main()
 	printf("dec time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
 	start = clock();
-	CipherText c1 = encSec(1);	
-	//CipherText c1 = enc(1);	
+	//CipherText c1 = encSec(1);	
+	CipherText c1 = enc(1);	
 	end = clock();
 	printf("enc time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
 	start = clock();
-	CipherText c3 = enc(3);	
+//	CipherText c3 = enc(3);	
 	end = clock();
 	printf("enc time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 	
@@ -228,12 +230,12 @@ int main()
 	printf("+ time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
 	start = clock();
-	printf("dec + : %d\n", dec(rplus));
+//	printf("dec + : %d\n", dec(rplus));
 	end = clock();
 	printf("dec time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
 	start = clock();
-	ZqMatrix  rmul = c0*c1; 
+	ZqMatrix  rmul = c1*c0; 
 	end = clock();
 	printf("* time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
@@ -244,7 +246,7 @@ int main()
 	printf("dec time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
 	start = clock();
-	printf("mp dec : %d\n", MPDec(c3,2));
+	//printf("mp dec : %d\n", MPDec(c3,2));
 	end = clock();
 	printf("dec time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
@@ -254,6 +256,26 @@ int main()
 
 	//printf("dec : %d %d %d %d %d %d\n", dec(r1), dec(r2), dec(r3), dec(r4), dec(r5), dec(r6));
 //	printf("MPdec : %d\n", MPDec(r2,2));
+
+/*
+	for(int i=0; i<N; i++) {
+		for(int j=0; j<N; j++)
+			printf("%d ", c1(i,j));
+		printf("\n");
+	}	
+	printf("\n");
+*/
+	ZqMatrix f = rmul.flatten();
+//	for(int i=0; i<N; i++) {
+		for(int j=0; j<l; j++)
+			printf("%d ", rmul(0,j));
+
+	printf("\n");
+		for(int j=0; j<l; j++)
+			printf("%d ", f(0,j));
+	
+		printf("\n");
+//	}	
 
 	return 0;
 }

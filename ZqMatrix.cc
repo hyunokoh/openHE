@@ -5,6 +5,8 @@
 #include <math.h>
 #include "ZqMatrix.h"
 
+ZqMatrix::ZqMatrix() { }
+
 ZqMatrix::ZqMatrix(int theNumRows, int theNumCols, int theQ) {
 	pNumRows = theNumRows;
 	pNumCols = theNumCols;
@@ -100,6 +102,9 @@ ZqMatrix ZqMatrix::operator*(const ZqMatrix& theMat)
 			for(int k=0; k<pNumCols; k++) { 
         			s += a[k] * b[numCols*k];
 			}
+//			if(s>pQ) {
+//				printf("mul : s>pQ : %d\n", s);
+//			}
         		result(i,j) = MOD(s,pQ);
 		}
 	}
@@ -167,7 +172,7 @@ ZqMatrix ZqMatrix::invBitDecomp()
 			int x=0;
 			e = pElement + i*pNumCols+j*pL;
 			for(int k=0; k<pL; k++) {
-				x = x | (e[k]<<k);
+				x = x + (e[k]<<k);
 			}
 			a[i*pNumCols/pL+j] = x;
 		}
