@@ -62,9 +62,9 @@ ZqMatrix CipherText::operator*(const ZqMatrix& theMat)
 				s += countOnes(t);
 #endif
 			}
-			if(s>pQ) { 
-				printf("s>pQ\n");
-			}
+//			if(s>pQ) { 
+//				printf("s>pQ\n");
+//			}
                         result(i,j) = MOD(s,pQ);
 		}
 	}
