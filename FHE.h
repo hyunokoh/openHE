@@ -4,6 +4,7 @@
 #include "CipherText.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 
 const int l = 20;
