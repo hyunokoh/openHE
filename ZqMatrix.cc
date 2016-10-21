@@ -87,6 +87,15 @@ ZqMatrix ZqMatrix::operator-(const ZqMatrix& theMat)
 	return result;
 }
 
+ZqMatrix ZqMatrix::operator!()
+{
+	ZqMatrix result(pNumRows, pNumCols, pQ);
+
+	result = identity(pNumRows,1,pQ,pL) - *this;
+ 
+	return result;
+}
+
 // Left multiplication of this matrix and another
 ZqMatrix ZqMatrix::operator*(const ZqMatrix& theMat) 
 {
@@ -112,9 +121,9 @@ ZqMatrix ZqMatrix::operator*(const ZqMatrix& theMat)
 	return result;
 }
 
-ZqMatrix ZqMatrix::identity(int theNumRows, int theInitValue)
+ZqMatrix ZqMatrix::identity(int theNumRows, int theInitValue, int theQ, int theL)
 {
-	ZqMatrix result(theNumRows, theNumRows, 1);
+	ZqMatrix result(theNumRows, theNumRows, theQ);
 	for (int i=0; i<theNumRows; i++) {
 		for(int j=0; j<theNumRows; j++) {
 			if(i==j) result(i,i) = theInitValue;

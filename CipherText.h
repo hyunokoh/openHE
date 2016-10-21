@@ -16,6 +16,7 @@ public:
 	/*virtual*/ ZqMatrix operator+(const ZqMatrix& theMat);
         /*virtual*/ ZqMatrix operator-(const ZqMatrix& theMat);
         /*virtual*/ ZqMatrix operator*(const ZqMatrix& theMat);
+        /*virtual*/ ZqMatrix operator!();
 
 	void pack(uint64_t* packMat, int* mat, int numRows, int numCols);
 	void packTranspose(uint64_t* packMat, int* mat, int numRows, int numCols);

@@ -28,13 +28,14 @@ public:
 	virtual ZqMatrix operator+(const ZqMatrix& theMat);
 	virtual ZqMatrix operator-(const ZqMatrix& theMat);
 	virtual ZqMatrix operator*(const ZqMatrix& theMat);
+	virtual ZqMatrix operator!();
 
 	// Access the individual elements                               
 	int& operator()(const int& row, const int& col) { return pElement[row*pNumCols+col]; }
 	const int& operator()(const int& row, const int& col) const { return pElement[row*pNumCols+col]; }
 
 	// GSW related functions
-	static ZqMatrix identity(int theNumRows, int theInitValue=1);
+	static ZqMatrix identity(int theNumRows, int theInitValue=1,int theQ=1, int theL=1);
 
 	void randomize(int range);
 
@@ -52,6 +53,10 @@ public:
 	int getNumCols() const { return pNumCols; }
 	int getQ() const { return pQ; }
 	int getL() const { return pL; }
+
+	// setup parameters
+	void setQ(int theQ) { pQ = theQ; }
+	void setL(int theL) { pL = theL; }
 };
 
 #endif

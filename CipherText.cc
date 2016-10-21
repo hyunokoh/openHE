@@ -25,6 +25,12 @@ ZqMatrix CipherText::operator-(const ZqMatrix& theMat)
 	return result.flatten();
 }
 
+ZqMatrix CipherText::operator!()
+{
+	CipherText result = ZqMatrix::operator!();
+	return result.flatten();
+}
+
 // Left multiplication of this matrix and another
 // It is a rectangular matrix or NxN
 ZqMatrix CipherText::operator*(const ZqMatrix& theMat)
@@ -85,8 +91,7 @@ ZqMatrix CipherText::operator*(const ZqMatrix& theMat)
                 }
         }
 #endif
-	return result;
-	//return result.flatten();
+	return result.flatten();
 }
 
 void CipherText::pack(uint64_t* packMat, int* mat, int num, int packedNum)

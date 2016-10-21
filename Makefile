@@ -13,6 +13,6 @@ Test_adder : Test_adder.cc FHE.cc CipherText.cc ZqMatrix.cc
 	g++ $(CFLAGS) -o $@ $^ 
 
 clean: 
-	rm gsw
+	rm gsw Test_basic Test_adder
 	rm *.o
 

@@ -61,5 +61,11 @@ int main()
 	end = clock();
 	printf("dec time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
+	CipherText notc0 = !c0;
+	printf("not %d =  %d\n", gsw.dec(c0), gsw.dec(notc0));
+
+	CipherText notc1 = !c1;
+	printf("not %d =  %d\n", gsw.dec(c1), gsw.dec(notc1));
+
 	return 0;
 }
