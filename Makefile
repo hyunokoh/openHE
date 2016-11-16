@@ -7,7 +7,7 @@ all: Test_basic Test_adder gsw poly
 gsw: gsw.cc ZqMatrix.cc CipherText.cc
 	g++ $(CFLAGS) -o $@ $^ 
 
-Test_basic : Test_basic.cc FHE.cc CipherText.cc APCipherText.cc ZqMatrix.cc
+Test_basic : Test_basic.cc FHE.cc CipherText.cc ZqMatrix.cc
 	g++ $(CFLAGS) -o $@ $^ 
 
 Test_adder : Test_adder.cc FHE.cc CipherText.cc ZqMatrix.cc

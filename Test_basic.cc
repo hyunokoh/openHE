@@ -73,6 +73,6 @@ int main()
 
 	CipherText notc1 = !c1;
 	printf("not %d =  %d\n", gsw.dec(c1), gsw.dec(notc1));
-
+*/
 	return 0;
 }
