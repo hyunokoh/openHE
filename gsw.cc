@@ -5,10 +5,10 @@
 #include <time.h>
 
 
-const int l = 8;
-const int n = 8;	// Note that to support *, at least, N < 2^{l-2}/2
-//const int l = 20;
-//const int n = 80;	// Note that to support *, at least, N < 2^{l-2}/2
+//const int l = 8;
+//const int n = 8;	// Note that to support *, at least, N < 2^{l-2}/2
+const int l = 9;
+const int n = 500;	// Note that to support *, at least, N < 2^{l-2}/2
 const int q = (1<<(l));
 //const int m = (2*n*l);
 const int m = (n+1)*(l+3);	// In BV14, m = (n+1)(l+O(1))

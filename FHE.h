@@ -7,10 +7,10 @@
 #include <time.h>
 
 
-//const int l = 3;
-//const int n = 3;	// Note that to support *, at least, N < 2^{l-2}/2
-const int l = 20;
-const int n = 80;	// Note that to support *, at least, N < 2^{l-2}/2
+//const int l = 20;
+//const int n = 80;	// Note that to support *, at least, N < 2^{l-2}/2
+const int l = 30;
+const int n = 10;	// Note that to support *, at least, N < 2^{l-2}/2
 const int q = (1<<(l));
 //const int m = (2*n*l);
 const int m = (n+1)*(l+3);	// In BV14, m = (n+1)(l+O(1))
@@ -34,27 +34,27 @@ protected:
 public:
 	FHE();
 
-	void setup();
+	virtual void setup();
 
 	int getZq();
 
 	int getX();
 
-	void generateSK();
-	void generatePK();
+	virtual void generateSK();
+	virtual void generatePK();
 
 	ZqMatrix generateNewRandom();
 
-	void genKeys();
+	virtual void genKeys();
 
 	// public key encryption 
-	ZqMatrix enc(int mu);
+	virtual ZqMatrix enc(int mu);
 
 	// In BV14, there are public key based and secret key based encryption
 	// secret key encryption
-	ZqMatrix encSec(int mu);
+	virtual ZqMatrix encSec(int mu);
 
 	// decryption
-	int dec(ZqMatrix& C,int index=l-1);
-	int MPDec(ZqMatrix& C, int bitLength, int index = l-1);
+	virtual int dec(ZqMatrix& C,int index=l-1);
+	virtual int MPDec(ZqMatrix& C, int bitLength, int index = l-1);
 };

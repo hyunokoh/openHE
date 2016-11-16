@@ -19,6 +19,7 @@ int main()
 	end = clock();
 	printf("enc time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
+
 	start = clock();
 	printf("dec 0 : %d\n", gsw.dec(c0));
 	end = clock();
@@ -30,6 +31,12 @@ int main()
 	end = clock();
 	printf("enc time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
+	c1 = CipherText::identity(c0.getNumRows()) - c0;
+	c1.setQ(c0.getQ());
+	c1.setL(c0.getL());
+	//c1 = CipherText::identity(c0.getNumRows());
+	printf("dec not : %d\n", gsw.dec(c1));
+/*
 	start = clock();
 	CipherText c3 = gsw.enc(3);	
 	end = clock();
