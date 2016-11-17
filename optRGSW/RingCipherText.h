@@ -14,6 +14,7 @@ public:
         virtual ~RingCipherText(){}
 
         /*virtual*/ RingMatrix operator*(const RingMatrix& theMat);
+	friend void mulCipherText(RingCipherText&, RingMatrix&, RingMatrix&);
 };
 
 #endif

@@ -42,7 +42,8 @@ int main()
 	printf("dec time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 
 	start = clock();
-	RingCipherText  rmul = c0*c1; 
+	RingCipherText  rmul(c0.getNumRows(),c1.getNumCols());
+	mulCipherText(rmul,c0,c1); 
 	end = clock();
 	printf("* time : %f\n", (float)(end-start)/CLOCKS_PER_SEC);
 

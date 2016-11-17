@@ -62,10 +62,6 @@ void sub(Poly& theC, Poly& theA, Poly& theB)
 
 void mul(Poly& theC, Poly& theA, Poly& theB)
 {
-//	Poly ntt0, ntt1;
-//	this->ntt(ntt0, gPolyEnv, 0, N);
-//	theA.ntt(ntt1, gPolyEnv, 0, N);
-
 	int k;
 	for(k=0; k<N; ++k)  {
 		theC.a[k] = MOD(theA.a[k]*theB.a[k]);
@@ -154,14 +150,14 @@ void Poly::ntt(Poly& y, PolyEnv& env, int startIndex, int n)
 	Poly* newY = &y;
 	Poly* oldA = this;
 	int N2 = N>>1;
-	int w = 1;
-	for(int i=N2; i>1; i = i>>1) {
+	for(int i=N2; i>=1; i = i>>1) {
 		for(int j=0; j<i; ++j) {
+			int w = 1;
 			for(int k=0; k<N/2; k+=i) {
 				int u = w* oldA->a[k+N2];
 				newY->a[k] = MOD(oldA->a[k] + u);	
 				newY->a[k+N2] = MOD(oldA->a[k] - u);	
-				w = env.wn[j+k];
+				w = env.wn[k];
 			}
 		}
 		Poly* temp = oldA;

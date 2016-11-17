@@ -193,6 +193,41 @@ RingMatrix RingMatrix::invBitDecomp()
 	return result;
 }
 
+void RingMatrix::decompose(RingMatrix& result)
+{
+	Poly* a = result.getElement();
+
+	for (int i=0; i<pNumRows; i++) {
+		for (int j=0; j<pNumCols; j++) {
+			Poly x = pElement[i*pNumCols+j];
+			Poly* e = a+i*pNumCols*L+j*L;
+			for (int k=0; k<L; k++) {
+				e[k] = x & 1;
+				x = x>>1;
+			}
+		}
+	}
+}
+
+void RingMatrix::compose(RingMatrix& result)
+{
+	Poly* e = pElement;
+	Poly* a = result.getElement();
+
+	for (int i=0; i<pNumRows; i++) {
+		for (int j=0; j<pNumCols/L; j++) {
+			Poly x(0);
+			e = pElement + i*pNumCols+j*L;
+			for(int k=0; k<L; k++) {
+				Poly temp = e[k]<<k;
+				add(x, x, temp);
+			}
+			a[i*pNumCols/L+j] = x;
+		}
+	}
+}
+
+
 RingMatrix RingMatrix::getRowVector(int theRow)
 {
 	RingMatrix result(1, pNumCols);

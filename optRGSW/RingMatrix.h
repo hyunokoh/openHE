@@ -27,6 +27,7 @@ public:
 	virtual RingMatrix operator!();
 
 	friend void mul(RingMatrix& theC, const RingMatrix& theA, const RingMatrix& theB);
+	friend void mulMat(RingMatrix& theC, const RingMatrix& theA, const RingMatrix& theB) { mul(theC, theA, theB); }
 
 	// for each item, apply ntt or nttInv
 	void ntt();
@@ -41,6 +42,9 @@ public:
 
 	RingMatrix bitDecomp();
 	RingMatrix invBitDecomp();
+
+	void decompose(RingMatrix& result);
+	void compose(RingMatrix& result);
 
 	RingMatrix getRowVector(int theRow); 
 
