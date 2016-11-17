@@ -121,6 +121,7 @@ void Poly::randomizeInX()
 	}
 }
 
+/*
 void Poly::ntt(Poly& y, PolyEnv& env, int startIndex, int n)
 {
 	int w = 1;
@@ -139,10 +140,41 @@ void Poly::ntt(Poly& y, PolyEnv& env, int startIndex, int n)
 	ntt(y1, env, startIndex+range, n>>1);
 
 	for(k=0; k<n/2; ++k) {
-		y.a[k] = MOD(y0.a[k] + w*y1.a[k]);	
-		y.a[k+n/2] = MOD(y0.a[k] - w*y1.a[k]);	
+		int u = w*y1.a[k];
+		y.a[k] = MOD(y0.a[k] + u);	
+		y.a[k+n/2] = MOD(y0.a[k] - u);	
 		w = env.wn[startIndex+k*range];
 	}
+}
+*/
+
+// iteration version
+void Poly::ntt(Poly& y, PolyEnv& env, int startIndex, int n)
+{
+	Poly* newY = &y;
+	Poly* oldA = this;
+	int N2 = N>>1;
+	int w = 1;
+	for(int i=N2; i>1; i = i>>1) {
+		for(int j=0; j<i; ++j) {
+			for(int k=0; k<N/2; k+=i) {
+				int u = w* oldA->a[k+N2];
+				newY->a[k] = MOD(oldA->a[k] + u);	
+				newY->a[k+N2] = MOD(oldA->a[k] - u);	
+				w = env.wn[j+k];
+			}
+		}
+		Poly* temp = oldA;
+		oldA = newY;
+		newY = temp;
+	}
+
+	y = *newY;
+}
+
+void Poly::ntt(Poly& y)
+{
+	ntt(y, gPolyEnv, 0, N);
 }
 
 void Poly::nttInv(Poly& y)

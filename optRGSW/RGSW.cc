@@ -33,11 +33,16 @@ RingMatrix RGSW::generateNewRandom()
 // In BV14, there are public key based and secret key based encryption
 RingCipherText RGSW::encSec(int mu)
 {
+	RingCipherText result;	
 	if(mu) {
-		return generateNewRandom()+RingMatrix::identity(2*L, mu).invBitDecomp();
+		result = generateNewRandom()+RingMatrix::identity(2*L, mu).invBitDecomp();
 	} else {
-		return generateNewRandom();
+		result =  generateNewRandom();
 	}
+
+	result.ntt();
+
+	return result;
 }
 
 int RGSW::dec(RingCipherText& C,int index)

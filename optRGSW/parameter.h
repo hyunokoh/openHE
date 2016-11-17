@@ -2,6 +2,7 @@
 #define _RGSW_PARAMETER_
 
 #define N 1024 
+#define logN 10
 #define Q 0x7FFE001
 //#define N 4 
 //#define Q 5 

@@ -7,6 +7,7 @@ all: Test_rgsw
 Test_rgsw : Test_RGSW.cc RGSW.cc RingCipherText.cc RingMatrix.cc Poly.cc
 	g++ $(CFLAGS) -DOPTIMIZED -o $@ $^ 
 
+
 clean: 
 	rm Test_rgsw
 	rm *.o

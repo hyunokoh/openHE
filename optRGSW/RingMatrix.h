@@ -23,10 +23,14 @@ public:
 	// Matrix mathematical operations
 	virtual RingMatrix operator+(const RingMatrix& theMat);
 	virtual RingMatrix operator-(const RingMatrix& theMat);
-	//virtual RingMatrix operator*(const RingMatrix& theMat);
+	virtual RingMatrix operator*(const RingMatrix& theMat);
 	virtual RingMatrix operator!();
 
 	friend void mul(RingMatrix& theC, const RingMatrix& theA, const RingMatrix& theB);
+
+	// for each item, apply ntt or nttInv
+	void ntt();
+	void nttInv();
 
 	// Access the individual elements                               
 	Poly& operator()(const int& row, const int& col) { return pElement[row*pNumCols+col]; }

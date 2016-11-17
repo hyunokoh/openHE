@@ -73,27 +73,71 @@ RingMatrix RingMatrix::operator!()
 }
 
 // Left multiplication of this matrix and another
+RingMatrix RingMatrix::operator*(const RingMatrix& theMat)
+{
+        RingMatrix result(pNumRows, theMat.getNumCols());
+        int numCols = theMat.getNumCols();
+        Poly* element = theMat.getElement();
+
+        for (int i=0; i<pNumRows; i++) {
+                Poly* a = pElement+i*pNumCols;
+                for (int j=0; j<numCols; j++) {
+                        Poly* b = element+j;
+                        Poly s(0);
+                        for(int k=0; k<pNumCols; k++) {
+				Poly temp;
+				mul(temp,a[k], b[numCols*k]);
+        			add(s, s, temp);
+                                //s = a[k] * b[numCols*k] + s;
+                        }
+                        result(i,j) = s;
+                }
+        }
+
+        return result;
+}
+
+
+// Fast multiplication without memory copy
 void mul(RingMatrix& theC, const RingMatrix& theA, const RingMatrix& theB) 
 {
-	RingMatrix result(pNumRows, theMat.getNumCols());
+	int numRows = theA.getNumRows();
 	int numCols = theB.getNumCols();
+	int numCommon = theA.getNumCols();
 	Poly* element = theB.getElement();
 
-	for (int i=0; i<pNumRows; i++) {
-		Poly* a = theA.pElement+i*pNumCols;
+	for (int i=0; i<numRows; i++) {
+		Poly* a = theA.pElement+i*numCommon;
 		for (int j=0; j<numCols; j++) {
 			Poly* b = element+j;
 			Poly s(0);
-			for(int k=0; k<pNumCols; k++) { 
+			for(int k=0; k<numCommon; k++) { 
 				Poly temp;
 				mul(temp,a[k], b[numCols*k]);
         			add(s, s, temp);
 			}
-        		result(i,j) = s;
+        		theC(i,j) = s;
 		}
 	}
+}
 
-	return result;
+// ntt
+void RingMatrix::ntt()
+{
+	Poly a;
+	for (int i=0; i<pNumRows*pNumCols; i++) {
+		pElement[i].ntt(a);
+		pElement[i] = a;
+	}
+}
+
+void RingMatrix::nttInv()
+{
+	Poly a;
+	for (int i=0; i<pNumRows*pNumCols; i++) {
+		pElement[i].nttInv(a);
+		pElement[i] = a;
+	}
 }
 
 RingMatrix RingMatrix::identity(int theNumRows, int theInitValue)

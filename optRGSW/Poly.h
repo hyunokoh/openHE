@@ -19,8 +19,10 @@ public:
 	Poly() {}
 	Poly(int theInit);
 
-        void ntt(Poly& y, PolyEnv& env, int startIndex, int n);
+	void ntt(Poly& y);
         void nttInv(Poly& y);
+
+        void ntt(Poly& y, PolyEnv& env, int startIndex, int n);
 	
 	Poly& operator=(const Poly&);
 
