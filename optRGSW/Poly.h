@@ -12,7 +12,7 @@ public:
 }; 
 
 class Poly {
-private:
+public:
         int a[N];
 
 public:

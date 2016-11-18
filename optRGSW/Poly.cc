@@ -3,7 +3,6 @@
 #include <time.h>
 #include "Poly.h"
 
-#ifdef OPTIMIZED
 PolyEnv::PolyEnv(int theG)
 {
 	wn[0] = 1;
@@ -14,7 +13,6 @@ PolyEnv::PolyEnv(int theG)
 
 PolyEnv gPolyEnv(g);
 PolyEnv gPolyInvEnv(gInv);
-#endif
 
 Poly::Poly(int theInit)
 {
@@ -152,12 +150,13 @@ void Poly::ntt(Poly& y, PolyEnv& env, int startIndex, int n)
 	int N2 = N>>1;
 	for(int i=N2; i>=1; i = i>>1) {
 		for(int j=0; j<i; ++j) {
-			int w = 1;
-			for(int k=0; k<N/2; k+=i) {
-				int u = w* oldA->a[k+N2];
-				newY->a[k] = MOD(oldA->a[k] + u);	
-				newY->a[k+N2] = MOD(oldA->a[k] - u);	
-				w = env.wn[k];
+			//int w = 1;
+			for(int k=0; k<N2; k+=i) {
+				//w = env.wn[k];
+				int index = j+k;
+				int u = env.wn[k] * oldA->a[index+i];
+				newY->a[index] = MOD(oldA->a[index] + u);	
+				newY->a[index+N2] = MOD(oldA->a[index] - u);	
 			}
 		}
 		Poly* temp = oldA;
@@ -165,7 +164,7 @@ void Poly::ntt(Poly& y, PolyEnv& env, int startIndex, int n)
 		newY = temp;
 	}
 
-	y = *newY;
+	y = *oldA;
 }
 
 void Poly::ntt(Poly& y)
