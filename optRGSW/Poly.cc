@@ -115,33 +115,6 @@ void Poly::randomizeInX()
 	}
 }
 
-/*
-void Poly::ntt(Poly& y, PolyEnv& env, int startIndex, int n)
-{
-	int w = 1;
-	int k;
-
-	if(n==1) {
-		y.a[0] = a[startIndex];
-		return;
-	}
-	
-	Poly y0, y1;
-
-	int range = N/n;
-
-	ntt(y0, env, startIndex, n>>1);
-	ntt(y1, env, startIndex+range, n>>1);
-
-	for(k=0; k<n/2; ++k) {
-		int u = w*y1.a[k];
-		y.a[k] = MOD(y0.a[k] + u);	
-		y.a[k+n/2] = MOD(y0.a[k] - u);	
-		w = env.wn[startIndex+k*range];
-	}
-}
-*/
-
 // iteration version
 void Poly::ntt(Poly& y, PolyEnv& env, int startIndex, int n)
 {
@@ -150,13 +123,12 @@ void Poly::ntt(Poly& y, PolyEnv& env, int startIndex, int n)
 	int N2 = N>>1;
 	for(int i=N2; i>=1; i = i>>1) {
 		for(int j=0; j<i; ++j) {
-			//int w = 1;
 			for(int k=0; k<N2; k+=i) {
-				//w = env.wn[k];
-				int index = j+k;
-				int u = env.wn[k] * oldA->a[index+i];
-				newY->a[index] = MOD(oldA->a[index] + u);	
-				newY->a[index+N2] = MOD(oldA->a[index] - u);	
+				int target = j+k;
+				int source = j+(k<<1);
+				int u = env.wn[k] * oldA->a[source+i];
+				newY->a[target] = MOD(oldA->a[source] + u);	
+				newY->a[target+N2] = MOD(oldA->a[source] - u);	
 			}
 		}
 		Poly* temp = oldA;
