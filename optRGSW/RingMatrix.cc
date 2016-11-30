@@ -122,21 +122,21 @@ void mul(RingMatrix& theC, const RingMatrix& theA, const RingMatrix& theB)
 }
 
 // ntt
-void RingMatrix::ntt()
+void RingMatrix::ntt(RingMatrix& m) const
 {
 	Poly a;
 	for (int i=0; i<pNumRows*pNumCols; i++) {
-		pElement[i].ntt(a);
-		pElement[i] = a;
+		m.getElement(i).ntt(a);
+		m.setElement(i,a);
 	}
 }
 
-void RingMatrix::nttInv()
+void RingMatrix::nttInv(RingMatrix& m) const
 {
 	Poly a;
 	for (int i=0; i<pNumRows*pNumCols; i++) {
-		pElement[i].nttInv(a);
-		pElement[i] = a;
+		m.getElement(i).nttInv(a);
+		m.setElement(i,a);
 	}
 }
 

@@ -30,8 +30,8 @@ public:
 	friend void mulMat(RingMatrix& theC, const RingMatrix& theA, const RingMatrix& theB) { mul(theC, theA, theB); }
 
 	// for each item, apply ntt or nttInv
-	void ntt();
-	void nttInv();
+	void ntt(RingMatrix&) const;
+	void nttInv(RingMatrix&) const;
 
 	// Access the individual elements                               
 	Poly& operator()(const int& row, const int& col) { return pElement[row*pNumCols+col]; }
@@ -50,6 +50,8 @@ public:
 
 	// Access elements
 	Poly* getElement() const { return pElement; }
+	Poly& getElement(int index) const { return pElement[index]; }
+	void setElement(int index, Poly& p) { pElement[index] =  p; }
 
 	// Access the row and column sizes                              
 	int getNumRows() const { return pNumRows; }

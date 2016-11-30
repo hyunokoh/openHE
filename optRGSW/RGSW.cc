@@ -40,8 +40,6 @@ RingCipherText RGSW::encSec(int mu)
 		result =  generateNewRandom();
 	}
 
-	result.ntt();
-
 	return result;
 }
 

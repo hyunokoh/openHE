@@ -7,18 +7,23 @@
 // It is a rectangular matrix or NxN
 RingMatrix RingCipherText::operator*(const RingMatrix& theMat)
 {
-	RingMatrix t = *this;
-	t.nttInv();
-	RingMatrix d = t.bitDecomp();
-	d.ntt();
-	return d*theMat;
+	RingMatrix d = bitDecomp();
+	RingMatrix e(theMat.getNumRows(), theMat.getNumCols());
+	d.ntt(d);
+	theMat.ntt(e);
+	RingMatrix t = d*e;
+	t.nttInv(t);
+
+	return t;
 }
 
 void mulCipherText(RingCipherText& theC, RingMatrix& theA, RingMatrix& theB)
 {
-	theA.nttInv();
 	RingMatrix d(theA.getNumRows(), theA.getNumCols()*L);
+	RingMatrix e(theB.getNumRows(), theB.getNumCols());
 	theA.decompose(d);
-	d.ntt();
-	mulMat(theC, d, theB);
+	d.ntt(d);
+	theB.ntt(e);
+	mulMat(theC, d, e);
+	theC.nttInv(theC);
 }
